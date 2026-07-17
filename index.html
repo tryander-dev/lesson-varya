@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поленина Варвара Андреевна — WikiLab Ultra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-color: #1a73e8;
+            --accent-hover: #1557b0;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 10px 30px -10px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.02);
+            --hover-shadow: 0 20px 40px -15px rgba(26, 115, 232, 0.15);
+            --radius: 20px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Цвета для темной темы */
+        [data-theme="dark"] {
+            --bg-color: #0b0f19;
+            --surface-color: #131c2e;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #38bdf8;
+            --accent-hover: #7dd3fc;
+            --border-color: #1e293b;
+            --card-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+            --hover-shadow: 0 20px 40px -15px rgba(56, 189, 248, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            transition: background-color 0.4s, color 0.4s;
+        }
+
+        /* Умная стеклянная шапка */
+        .wiki-header {
+            position: sticky;
+            top: 0;
+            background: rgba(var(--surface-color), 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .wiki-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--accent-color);
+        }
+        
+        .wiki-header-left svg { fill: var(--accent-color); }
+
+        /* Переключатель темы (Солнце / Луна) */
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+        .theme-toggle:hover {
+            background: var(--border-color);
+            transform: rotate(30deg);
+        }
+        .theme-toggle .moon-icon { display: none; }
+        .theme-toggle .sun-icon { display: block; }
+        
+        [data-theme="dark"] .theme-toggle .moon-icon { display: block; }
+        [data-theme="dark"] .theme-toggle .sun-icon { display: none; }
+
+        #progress-container {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+        }
+        #progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #ec4899);
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        /* Макет с боковым меню */
+        .main-layout {
+            max-width: 1300px;
+            margin: 40px auto;
+            display: flex;
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* Умное боковое меню */
+        .sidebar-nav {
+            width: 240px;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .sidebar-nav a {
+            padding: 10px 16px;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95em;
+            border-left: 2px solid transparent;
+        }
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            color: var(--accent-color);
+            background: rgba(26, 115, 232, 0.05);
+            border-left-color: var(--accent-color);
+            padding-left: 20px;
+        }
+        [data-theme="dark"] .sidebar-nav a:hover, [data-theme="dark"] .sidebar-nav a.active {
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        .container {
+            flex-grow: 1;
+            max-width: 880px;
+            background-color: var(--surface-color);
+            border-radius: var(--radius);
+            padding: 50px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 3.2em;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--text-secondary);
+            margin-bottom: 2em;
+            font-weight: 400;
+        }
+
+        h2 {
+            padding-bottom: 0.4em;
+            margin-top: 2em;
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Статичный стабильный Инфобокс (без лишней анимации клика) */
+        .infobox {
+            float: right;
+            margin: 0 0 25px 35px;
+            background: var(--surface-color);
+            border-radius: var(--radius);
+            width: 300px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .infobox-header {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(26,115,232,0.05), rgba(236,72,153,0.05));
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.15em;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .infobox table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .infobox th, .infobox td {
+            padding: 14px 18px;
+            font-size: 0.9em;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .infobox th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-align: left;
+            width: 40%;
+        }
+
+        /* Изображения */
+        .thumbinner {
+            background: var(--surface-color);
+            border-radius: var(--radius);
+            padding: 12px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        .thumbinner img {
+            border-radius: calc(var(--radius) - 8px);
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Теги (чипсы) — убран кликабельный ховер */
+        .chip {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(26, 115, 232, 0.08);
+            color: var(--accent-color);
+            border-radius: 100px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 3px;
+            cursor: default;
+        }
+        [data-theme="dark"] .chip { background: rgba(56, 189, 248, 0.12); }
+
+        /* Счётчики ЕГЭ */
+        .ege-card {
+            background: rgba(26, 115, 232, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .ege-results {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .ege-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .ege-label { width: 160px; font-weight: 500; }
+        .ege-bar-container {
+            flex-grow: 1;
+            height: 10px;
+            background: var(--border-color);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+        .ege-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #a855f7);
+            border-radius: 100px;
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .ege-value {
+            font-weight: 700;
+            color: var(--accent-color);
+            width: 45px;
+            text-align: right;
+        }
+
+        /* Информационные карточки — убран сдвиг и pointer */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .g-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            cursor: default;
+        }
+
+        .g-card-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: var(--accent-color);
+        }
+
+        /* Модуль образовательной дорожной карты (Roadmap) */
+        .roadmap-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .roadmap-step {
+            display: flex;
+            gap: 20px;
+            background: rgba(26, 115, 232, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 24px;
+            align-items: flex-start;
+        }
+        .step-badge {
+            padding: 5px 14px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+        .step-badge.processing {
+            background: rgba(234, 179, 8, 0.1);
+            color: #ca8a04;
+        }
+        [data-theme="dark"] .step-badge.processing {
+            background: rgba(234, 179, 8, 0.15);
+            color: #fde047;
+        }
+        .step-badge.plan {
+            background: rgba(148, 163, 184, 0.1);
+            color: var(--text-secondary);
+        }
+        .step-title {
+            font-weight: 700;
+            font-size: 1.15em;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+        .step-content p {
+            margin: 0;
+            font-size: 0.95em;
+            color: var(--text-secondary);
+        }
+
+        /* Кастомный шикарный скроллбар */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 100px;
+            border: 3px solid var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .sidebar-nav { display: none; }
+            .main-layout { margin: 20px auto; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 30px 20px; border-radius: 0; border: none; }
+            .infobox { float: none; width: 100%; margin: 30px 0; }
+            .roadmap-step { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка в стиле Google Labs -->
+    <div class="wiki-header">
+        <div class="wiki-header-left">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            WikiLab Pro
+        </div>
+        <button class="theme-toggle" id="themeBtn" title="Переключить тему">
+            <!-- Иконка Солнца (для светлой темы) -->
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M0 0h24v24H0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.5h-2v3h2V1zM5.36 18.22l-1.79 1.8 1.41 1.41 1.8-1.79-1.42-1.42zM10.5 20h2v3h-2v-3zm7.04-1.78l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5h3v2h-3v-2zm-1.24-5.66l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"/></svg>
+            <!-- Иконка Луны (для темной темы) -->
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M0 0h24v24H0z" fill="none"/><path d="M12.3 2a10 10 0 0 0-1.9 14 10 10 0 0 0 14-1.9 1 1 0 0 1 .8 1.2 10 10 0 1 1-14.1-14.1 1 1 0 0 1 1.2.8z"/></svg>
+        </button>
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+    </div>
+
+    <div class="main-layout">
+        <!-- Боковое умное меню -->
+        <div class="sidebar-nav" id="sidebar">
+            <a href="#intro" class="active">Главная</a>
+            <a href="#bio">Биография</a>
+            <a href="#edu">Образование & Счётчики</a>
+            <a href="#sport">Спорт & Фигура</a>
+            <a href="#dance">Танцевальный опыт</a>
+            <a href="#tech">IT & Контент</a>
+            <a href="#trajectory">Траектория ИИ</a>
+            <a href="#achievements">Достижения</a>
+        </div>
+
+        <!-- Основной контейнер данных -->
+        <div class="container">
+            <section id="intro">
+                <h1>Поленина Варвара Андреевна</h1>
+                <p class="subtitle">Спортсменка, хореограф со стажем, исследователь в сфере ИИ.</p>
+
+                <!-- Инфобокс -->
+                <div class="infobox">
+                    <div class="infobox-header">Поленина В. А.</div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td colspan="2" style="text-align: center; padding: 15px;">
+                                    <div class="thumbinner">
+                                        <img src="images/varvara_main.jpg" alt="Варвара">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Деятельность:</th>
+                                <td>
+                                    <span class="chip">Студентка</span>
+                                    <span class="chip">Спорт</span>
+                                    <span class="chip">Танцы</span>
+                                    <span class="chip">IT & AI</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Возраст:</th>
+                                <td>17 лет (18 ноября 2008)</td>
+                            </tr>
+                            <tr>
+                                <th>Локация:</th>
+                                <td>Российская Федерация</td>
+                            </tr>
+                            <tr>
+                                <th>Проект:</th>
+                                <td>Wildberries Partner</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p><b>Поленина Варвара Андреевна</b> — российская студентка, спортсменка, опытный хореограф, развивающийся ИТ-специалист и инфлюенсер. Известна выдающейся дисциплиной, эстетичной физической формой и интеграцией передовых технологий машинного обучения в творческую и аналитическую деятельность.</p>
+            </section>
+
+            <section id="bio">
+                <h2>Биография</h2>
+                <p>Варвара родилась 18 ноября 2008 года. С ранних лет демонстрировала высокие аналитические способности в сочетании с выдающейся пластикой. В возрасте 5 лет начала профессиональный путь в танцевальной индустрии, что сформировало её характер, грацию и упорство.</p>
+            </section>
+
+            <section id="edu">
+                <h2>Образование & Результаты ЕГЭ</h2>
+                <p>В 2026 году Варвара окончила среднее образование с <b>серебряной медалью</b> за успеваемость. Суммарный показатель единого госэкзамена составил <b class="count-up" data-target="249">0</b> баллов.</p>
+                
+                <!-- Анимированная панель ЕГЭ -->
+                <div class="ege-card">
+                    <div class="ege-results">
+                        <div class="ege-item">
+                            <div class="ege-label">Русский язык</div>
+                            <div class="ege-bar-container"><div class="ege-bar" data-score="91"></div></div>
+                            <div class="ege-value"><span class="count-up" data-target="91">0</span></div>
+                        </div>
+                        <div class="ege-item">
+                            <div class="ege-label">Математика (проф.)</div>
+                            <div class="ege-bar-container"><div class="ege-bar" data-score="78"></div></div>
+                            <div class="ege-value"><span class="count-up" data-target="78">0</span></div>
+                        </div>
+                        <div class="ege-item">
+                            <div class="ege-label">Информатика</div>
+                            <div class="ege-bar-container"><div class="ege-bar" data-score="70"></div></div>
+                            <div class="ege-value"><span class="count-up" data-target="70">0</span></div>
+                        </div>
+                        <div class="ege-item">
+                            <div class="ege-label">Доп. баллы за медаль</div>
+                            <div class="ege-bar-container"><div class="ege-bar" data-score="100"></div></div>
+                            <div class="ege-value"><span class="count-up" data-target="10">0</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sport">
+                <h2>Спорт и физическая культура</h2>
+                <div class="thumbinner" style="float: right; width: 260px; margin: 0 0 20px 20px;">
+                    <img src="images/varvara_training.jpg" alt="Спорт">
+                </div>
+                <p>Физическая форма Варвары — результат глубокого понимания биомеханики тела и фитнес-нутрициологии. Регулярный тренировочный цикл включает силовые сессии, функциональный тренинг и упражнения на развитие гибкости, что позволяет ей сохранять идеальные пропорции.</p>
+            </section>
+
+            <section id="dance">
+                <h2>Танцевальный опыт</h2>
+                <p>Профессиональный стаж в хореографии составляет <b class="count-up" data-target="12">0</b> лет. Специализируется на комплексных современных направлениях, уличной хореографии и экспериментальных стилях, сочетая технику с высокой эмоциональной подачей.</p>
+            </section>
+
+            <section id="tech">
+                <h2>IT-вектор и Контент-мейкинг</h2>
+                <p>Варвара успешно монетизирует свои навыки через платформу TikTok, создавая вовлекающий лайфстайл и спортивный контент. В последнее время активно погружается в сектор разработки ПО.</p>
+                <p>Главным ментором и вдохновителем в технологической сфере выступает её партнер, <a href="https://tryander.space" target="_blank">Александр Третьяков (TryAnder-dev)</a> — инженер-разработчик на экосистемах C#, .NET и Unity. Их совместный вектор — создание интерактивных продуктов на стыке искусства и сложного программного кода.</p>
+                <p>Параллельно развивает навыки операционного управления, координируя логистические процессы в качестве независимого курьера-партнера Wildberries.</p>
+            </section>
+
+            <!-- НОВЫЙ МОДУЛЬ: Траектория развития в ИИ -->
+            <section id="trajectory">
+                <h2>Образовательная траектория: ИИ & Машинное обучение</h2>
+                <p>Стратегический вектор развития Варвары направлен на глубокое освоение фундаментальных и прикладных ИТ-дисциплин. Ключевая цель — интеграция современных методов Data Science и ИИ в аналитику и творчество.</p>
+                
+                <div class="roadmap-container">
+                    <div class="roadmap-step">
+                        <div class="step-badge processing">В процессе</div>
+                        <div class="step-content">
+                            <div class="step-title">Освоение базового стека разработки</div>
+                            <p>Изучение архитектуры и синтаксиса высокоуровневых языков программирования <b>Python</b> и <b>C++</b>. Проектирование первых алгоритмических скриптов и систем обработки данных.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="roadmap-step">
+                        <div class="step-badge plan">План</div>
+                        <div class="step-content">
+                            <div class="step-title">Высшее профильное образование: Machine Learning</div>
+                            <p>Погружение в математическую базу: линейную алгебру, математический анализ, теорию вероятностей и классические алгоритмы машинного обучения (ML).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="roadmap-step">
+                        <div class="step-badge plan">План</div>
+                        <div class="step-content">
+                            <div class="step-title">Специализация: Искусственный Интеллект (AI)</div>
+                            <p>Проектирование и обучение нейросетевых моделей глубокого обучения (Deep Learning). Разработка ИИ-архитектур для комплексного анализа данных и автоматизации процессов.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="achievements">
+                <h2>Достижения & Хобби</h2>
+                <div class="grid-cards">
+                    <div class="g-card">
+                        <div class="g-card-title">🎖️ Серебряная медаль</div>
+                        <div style="font-size: 0.9em; color: var(--text-secondary);">Официальный знак отличия Министерства просвещения за академические успехи.</div>
+                    </div>
+                    <div class="g-card">
+                        <div class="g-card-title">🍳 Нутрициология</div>
+                        <div style="font-size: 0.9em; color: var(--text-secondary);">Разработка и приготовление уникальных высокобелковых и протеиновых блюд.</div>
+                    </div>
+                    <div class="g-card">
+                        <div class="g-card-title">💃 Сценический стаж</div>
+                        <div style="font-size: 0.9em; color: var(--text-secondary);">Более десяти лет регулярных побед на региональных танцевальных баттлах.</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="thumbinner" style="width: 100%; max-width: 500px; margin: 30px auto; text-align: center;">
+                <img src="images/varvara_casual.jpg" alt="Повседневный образ">
+            </div>
+
+            <div style="font-size: 0.8em; color: var(--text-secondary); border-top: 1px solid var(--border-color); padding-top: 20px; text-align: center;">
+                Проект разработан совместно с wwoly & tryander-dev
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Переключатель темной / светлой темы (Солнце и Луна)
+        const themeBtn = document.getElementById('themeBtn');
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+        });
+
+        // Индикатор чтения страницы и ScrollSpy (активные пункты меню)
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+        window.onscroll = function() {
+            // Индикатор прогресса
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            // ScrollSpy логика
+            let currentId = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 120) {
+                    currentId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(currentId)) {
+                    link.classList.add('active');
+                }
+            });
+        };
+
+        // Анимация красивых набегающих цифр (CountUp) + ЕГЭ полосы
+        window.onload = function() {
+            // Сначала запускаем полосы прогресса
+            const bars = document.querySelectorAll('.ege-bar');
+            bars.forEach(bar => {
+                const score = bar.getAttribute('data-score');
+                bar.style.width = score + '%';
+            });
+
+            // Запускаем счетчики цифр
+            const counters = document.querySelectorAll('.count-up');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const speed = target / 40; // Скорость анимации
+                
+                const updateCount = () => {
+                    const count = +counter.innerText;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + speed);
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+            });
+        };
+    </script>
+</body>
+</html>

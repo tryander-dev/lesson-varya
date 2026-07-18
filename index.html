@@ -1,54 +1,65 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta favicon="images/favicon.ico">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f4f1ea">
     <title>Поленина Варвара Андреевна — WikiLab Ultra</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Добавлен шрифт Caveat для эффекта рукописного текста -->
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
-            /* "Бумажная" светлая тема */
             --bg-color: #f4f1ea;
             --surface-color: #ffffff;
             --text-primary: #212121;
             --text-secondary: #4a4a4a;
-            --accent-color: #e63946; /* Цвет красного маркера */
+            --accent-color: #e63946;
             --border-color: #1a1a1a;
             --card-shadow: 4px 4px 0px var(--border-color);
-            --transition: all 0.15s ease-out; /* Резкие, "ручные" анимации */
+            --transition: all 0.15s ease-out;
             --hand-drawn-border: 3px 25px 5px 20px / 20px 5px 25px 3px;
             --hand-drawn-border-alt: 15px 2px 12px 5px / 2px 15px 4px 12px;
         }
 
-        /* Темная тема - стиль меловой доски или крафта */
         [data-theme="dark"] {
             --bg-color: #1c1c1a;
             --surface-color: #2b2b29;
             --text-primary: #f0f0f0;
             --text-secondary: #b0b0b0;
-            --accent-color: #ffb703; /* Желтый текстовыделитель */
+            --accent-color: #ffb703;
             --border-color: #e0e0e0;
             --card-shadow: 4px 4px 0px var(--border-color);
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 92px;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: "Inter", sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-primary);
-            /* Легкий шум бумаги */
             background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
             transition: background-color 0.2s, color 0.2s;
+            overflow-x: hidden;
         }
 
-        /* Убрано стекло, добавлена "бумажная" шапка */
+        img {
+            max-width: 100%;
+        }
+
         .wiki-header {
             position: sticky;
             top: 0;
@@ -66,16 +77,21 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-family: 'Caveat', cursive;
+            font-family: "Caveat", cursive;
             font-size: 1.8em;
             font-weight: 700;
             color: var(--text-primary);
             transform: rotate(-1deg);
+            white-space: nowrap;
         }
-        
-        .wiki-header-left svg { fill: var(--accent-color); width: 28px; height: 28px; }
 
-        /* Переключатель темы (Стикер-кнопка) */
+        .wiki-header-left svg {
+            fill: var(--accent-color);
+            width: 28px;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
         .theme-toggle {
             background: var(--bg-color);
             border: 2px solid var(--border-color);
@@ -88,18 +104,30 @@
             color: var(--text-primary);
             box-shadow: 2px 2px 0 var(--border-color);
             transition: var(--transition);
+            flex-shrink: 0;
         }
+
         .theme-toggle:hover {
             transform: translate(1px, 1px) rotate(15deg);
             box-shadow: 1px 1px 0 var(--border-color);
         }
-        .theme-toggle .moon-icon { display: none; }
-        .theme-toggle .sun-icon { display: block; }
-        
-        [data-theme="dark"] .theme-toggle .moon-icon { display: block; }
-        [data-theme="dark"] .theme-toggle .sun-icon { display: none; }
 
-        /* Маркерный прогресс-бар */
+        .theme-toggle .moon-icon {
+            display: none;
+        }
+
+        .theme-toggle .sun-icon {
+            display: block;
+        }
+
+        [data-theme="dark"] .theme-toggle .moon-icon {
+            display: block;
+        }
+
+        [data-theme="dark"] .theme-toggle .sun-icon {
+            display: none;
+        }
+
         #progress-container {
             position: absolute;
             bottom: -2px;
@@ -108,13 +136,14 @@
             height: 4px;
             background: transparent;
         }
+
         #progress-bar {
             height: 100%;
             background: var(--accent-color);
             width: 0%;
+            transition: width 0.1s linear;
         }
 
-        /* Макет */
         .main-layout {
             max-width: 1200px;
             margin: 50px auto;
@@ -123,7 +152,6 @@
             padding: 0 20px;
         }
 
-        /* Меню в виде заметок на полях */
         .sidebar-nav {
             width: 220px;
             position: sticky;
@@ -133,42 +161,45 @@
             flex-direction: column;
             gap: 12px;
             padding-right: 10px;
+            flex-shrink: 0;
         }
+
         .sidebar-nav a {
             padding: 8px 12px;
             color: var(--text-secondary);
-            font-family: 'Caveat', cursive;
+            font-family: "Caveat", cursive;
             font-size: 1.4em;
             text-decoration: none;
             border-bottom: 2px solid transparent;
             transition: var(--transition);
             transform: rotate(-1deg);
         }
+
         .sidebar-nav a:nth-child(even) {
             transform: rotate(1deg);
         }
-        .sidebar-nav a:hover, .sidebar-nav a.active {
+
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
             color: var(--text-primary);
             border-bottom: 2px solid var(--accent-color);
             transform: translateX(5px) rotate(0deg);
         }
 
-        /* Основной лист */
         .container {
             flex-grow: 1;
+            min-width: 0;
             max-width: 850px;
             background-color: var(--surface-color);
             padding: 50px 60px;
             border: 2px solid var(--border-color);
             border-radius: var(--hand-drawn-border);
             box-shadow: var(--card-shadow);
-            box-sizing: border-box;
             position: relative;
         }
 
-        /* Имитация скотча на главном листе */
         .container::before {
-            content: '';
+            content: "";
             position: absolute;
             top: -15px;
             left: 50%;
@@ -176,24 +207,23 @@
             width: 100px;
             height: 30px;
             background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            font-size: 3.5em;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             font-weight: 700;
             line-height: 1.1;
-            margin: 0 0 15px 0;
-            font-family: 'Inter', sans-serif;
+            margin: 0 0 15px;
             color: var(--text-primary);
             position: relative;
-            display: inline-block;
+            display: inline;
+            overflow-wrap: anywhere;
         }
-        
-        /* Маркерное подчеркивание заголовка */
+
         h1::after {
-            content: '';
+            content: "";
             position: absolute;
             bottom: 4px;
             left: -5px;
@@ -207,15 +237,16 @@
         }
 
         .subtitle {
-            font-family: 'Caveat', cursive;
+            font-family: "Caveat", cursive;
             font-size: 1.6em;
             color: var(--text-secondary);
-            margin-bottom: 2em;
+            margin: 22px 0 2em;
             transform: rotate(-0.5deg);
         }
 
         h2 {
-            font-size: 2.2em;
+            font-size: clamp(1.75rem, 4vw, 2.2rem);
+            line-height: 1.2;
             margin-top: 2em;
             margin-bottom: 0.5em;
             border-bottom: 3px dashed var(--border-color);
@@ -223,12 +254,16 @@
             display: inline-block;
         }
 
-        /* Инфобокс как отдельная прикрепленная карточка */
+        p {
+            overflow-wrap: break-word;
+        }
+
         .infobox {
             float: right;
             margin: 0 0 30px 40px;
             background: var(--surface-color);
             width: 300px;
+            max-width: 100%;
             border: 2px solid var(--border-color);
             border-radius: var(--hand-drawn-border-alt);
             box-shadow: 6px 6px 0px var(--border-color);
@@ -240,7 +275,7 @@
         .infobox-header {
             padding: 10px;
             text-align: center;
-            font-family: 'Caveat', cursive;
+            font-family: "Caveat", cursive;
             font-size: 1.8em;
             font-weight: 700;
             border-bottom: 2px solid var(--border-color);
@@ -250,12 +285,18 @@
         .infobox table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
-        .infobox th, .infobox td {
+
+        .infobox th,
+        .infobox td {
             padding: 10px 5px;
             font-size: 0.95em;
             border-bottom: 1px dashed var(--border-color);
+            overflow-wrap: anywhere;
+            vertical-align: top;
         }
+
         .infobox th {
             color: var(--text-secondary);
             font-weight: 700;
@@ -263,14 +304,15 @@
             width: 35%;
         }
 
-        /* Изображения с неровными рамками */
         .thumbinner {
             background: var(--surface-color);
             padding: 8px;
             border: 2px solid var(--border-color);
             border-radius: 2% 3% 2% 4% / 3% 2% 4% 2%;
             box-shadow: 3px 3px 0 var(--border-color);
+            max-width: 100%;
         }
+
         .thumbinner img {
             width: 100%;
             height: auto;
@@ -279,7 +321,6 @@
             filter: grayscale(10%) contrast(110%);
         }
 
-        /* Теги (чипсы) — стиль выделения маркером */
         .chip {
             display: inline-block;
             padding: 2px 10px;
@@ -287,61 +328,77 @@
             border: 2px solid var(--accent-color);
             color: var(--text-primary);
             border-radius: 40% 80% 50% 40% / 50% 40% 60% 40%;
-            font-family: 'Caveat', cursive;
+            font-family: "Caveat", cursive;
             font-size: 1.2em;
             margin: 3px;
             transform: rotate(-2deg);
+            line-height: 1.25;
         }
+
         .chip:nth-child(even) {
             transform: rotate(3deg);
         }
 
-        /* Счётчики ЕГЭ — блок в стиле черновика */
         .ege-card {
             border: 2px dashed var(--border-color);
             padding: 25px;
             margin: 30px 0;
             position: relative;
         }
+
         .ege-results {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
+
         .ege-item {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        .ege-label { width: 180px; font-weight: 700; font-family: 'Caveat', cursive; font-size: 1.3em;}
+
+        .ege-label {
+            width: 180px;
+            flex-shrink: 0;
+            font-weight: 700;
+            font-family: "Caveat", cursive;
+            font-size: 1.3em;
+            line-height: 1.1;
+        }
+
         .ege-bar-container {
             flex-grow: 1;
+            min-width: 80px;
             height: 16px;
             background: transparent;
             border: 2px solid var(--border-color);
             border-radius: 10px 3px 8px 4px / 3px 10px 4px 8px;
             padding: 2px;
         }
+
         .ege-bar {
             height: 100%;
             background: var(--text-primary);
             width: 0;
             border-radius: 5px 2px 5px 2px;
         }
+
         .ege-value {
             font-weight: 700;
             width: 40px;
+            flex-shrink: 0;
             text-align: right;
             font-size: 1.1em;
         }
 
-        /* Информационные карточки — асимметричная сетка */
         .grid-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 25px;
             margin: 30px 0;
         }
+
         .g-card {
             background: var(--bg-color);
             border: 2px solid var(--border-color);
@@ -350,10 +407,19 @@
             box-shadow: 3px 3px 0 var(--border-color);
             transition: var(--transition);
         }
-        .g-card:nth-child(1) { transform: rotate(-1.5deg); }
-        .g-card:nth-child(2) { transform: rotate(2deg) translateY(10px); }
-        .g-card:nth-child(3) { transform: rotate(-1deg); }
-        
+
+        .g-card:nth-child(1) {
+            transform: rotate(-1.5deg);
+        }
+
+        .g-card:nth-child(2) {
+            transform: rotate(2deg) translateY(10px);
+        }
+
+        .g-card:nth-child(3) {
+            transform: rotate(-1deg);
+        }
+
         .g-card:hover {
             transform: translate(-2px, -2px) rotate(0);
             box-shadow: 5px 5px 0 var(--border-color);
@@ -361,13 +427,12 @@
 
         .g-card-title {
             font-weight: 700;
-            font-family: 'Caveat', cursive;
+            font-family: "Caveat", cursive;
             font-size: 1.6em;
             margin-bottom: 5px;
             color: var(--accent-color);
         }
 
-        /* Дорожная карта (Roadmap) - связанная линия */
         .roadmap-container {
             display: flex;
             flex-direction: column;
@@ -376,6 +441,7 @@
             border-left: 3px solid var(--border-color);
             padding-left: 25px;
         }
+
         .roadmap-step {
             position: relative;
             background: var(--surface-color);
@@ -383,10 +449,9 @@
             padding: 20px;
             box-shadow: 3px 3px 0 var(--border-color);
         }
-        
-        /* Кружочки на линии (узлы графа) */
+
         .roadmap-step::before {
-            content: '';
+            content: "";
             position: absolute;
             left: -38px;
             top: 20px;
@@ -401,6 +466,7 @@
             border-radius: 2px 15px 3px 12px / 15px 3px 12px 2px;
             transform: rotate(0.5deg);
         }
+
         .roadmap-step:nth-child(odd) {
             border-radius: 12px 3px 15px 2px / 2px 12px 3px 15px;
             transform: rotate(-0.5deg);
@@ -410,71 +476,323 @@
             display: inline-block;
             padding: 2px 10px;
             border: 2px solid var(--border-color);
-            font-family: 'Caveat', cursive;
+            font-family: "Caveat", cursive;
             font-size: 1.2em;
             font-weight: 700;
             margin-bottom: 10px;
             transform: rotate(-2deg);
         }
-        .step-badge.processing { background: var(--accent-color); color: var(--surface-color); }
-        .step-badge.plan { background: transparent; color: var(--text-secondary); border-style: dashed; }
-        
+
+        .step-badge.processing {
+            background: var(--accent-color);
+            color: var(--surface-color);
+        }
+
+        .step-badge.plan {
+            background: transparent;
+            color: var(--text-secondary);
+            border-style: dashed;
+        }
+
         .step-title {
             font-weight: 700;
             font-size: 1.1em;
             margin-bottom: 5px;
         }
 
-        a { color: var(--accent-color); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-        a:hover { color: var(--text-primary); background: var(--accent-color); text-decoration: none; }
+        a {
+            color: var(--accent-color);
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+        }
 
-        /* Простой грубый скроллбар */
-        ::-webkit-scrollbar { width: 14px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); border-left: 2px solid var(--border-color); }
+        a:hover {
+            color: var(--text-primary);
+            background: var(--accent-color);
+            text-decoration: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+            border-left: 2px solid var(--border-color);
+        }
+
         ::-webkit-scrollbar-thumb {
             background: var(--text-primary);
             border: 2px solid var(--bg-color);
         }
 
-        /* Адаптивность */
         @media (max-width: 1024px) {
-            .sidebar-nav { display: none; }
-            .main-layout { gap: 0; }
+            .sidebar-nav {
+                display: none;
+            }
+
+            .main-layout {
+                gap: 0;
+                max-width: 900px;
+            }
+
+            .container {
+                max-width: none;
+                width: 100%;
+            }
         }
+
         @media (max-width: 768px) {
-            .container { padding: 30px 20px; border: none; border-bottom: 2px solid var(--border-color); border-radius: 0; box-shadow: none; }
-            .infobox { float: none; width: auto; margin: 20px 0; transform: rotate(0); }
-            h1 { font-size: 2.5em; }
+            html {
+                scroll-padding-top: 76px;
+            }
+
+            body {
+                font-size: 15px;
+            }
+
+            .wiki-header {
+                min-height: 68px;
+                padding: 11px 16px;
+            }
+
+            .wiki-header-left {
+                gap: 7px;
+                font-size: 1.45em;
+            }
+
+            .wiki-header-left svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .theme-toggle {
+                padding: 7px;
+            }
+
+            .main-layout {
+                margin: 22px auto 35px;
+                padding: 0 12px;
+            }
+
+            .container {
+                padding: 28px 18px 32px;
+                border: 2px solid var(--border-color);
+                border-radius: 16px 25px 12px 20px / 20px 12px 25px 16px;
+                box-shadow: 3px 3px 0 var(--border-color);
+            }
+
+            .container::before {
+                top: -12px;
+                width: 78px;
+                height: 23px;
+            }
+
+            h1 {
+                font-size: 2.15rem;
+                line-height: 1.12;
+            }
+
+            h1::after {
+                height: 9px;
+                bottom: 2px;
+            }
+
+            .subtitle {
+                font-size: 1.35em;
+                margin: 20px 0 25px;
+                line-height: 1.25;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+                margin-top: 1.7em;
+                padding-bottom: 7px;
+            }
+
+            .infobox {
+                float: none;
+                width: 100%;
+                margin: 22px 0;
+                transform: none;
+                box-shadow: 4px 4px 0 var(--border-color);
+            }
+
+            .infobox-header {
+                font-size: 1.65em;
+            }
+
+            .infobox th,
+            .infobox td {
+                font-size: 0.88em;
+                padding: 8px 4px;
+            }
+
+            .chip {
+                font-size: 1.1em;
+                padding: 2px 8px;
+            }
+
+            .ege-card {
+                padding: 18px 13px;
+                margin: 24px 0;
+            }
+
+            .ege-item {
+                display: grid;
+                grid-template-columns: 1fr 42px;
+                grid-template-areas:
+                    "label value"
+                    "bar bar";
+                gap: 6px 10px;
+                align-items: center;
+            }
+
+            .ege-label {
+                grid-area: label;
+                width: auto;
+                font-size: 1.25em;
+            }
+
+            .ege-value {
+                grid-area: value;
+                width: auto;
+            }
+
+            .ege-bar-container {
+                grid-area: bar;
+                width: 100%;
+                min-width: 0;
+            }
+
+            #sport .thumbinner,
+            #media .thumbinner {
+                float: none !important;
+                width: 100% !important;
+                max-width: 320px;
+                margin: 20px auto !important;
+                transform: rotate(0.5deg) !important;
+            }
+
+            #media .thumbinner > div {
+                height: 300px !important;
+            }
+
+            .grid-cards {
+                grid-template-columns: 1fr;
+                gap: 18px;
+                margin: 25px 0;
+            }
+
+            .g-card {
+                padding: 17px;
+            }
+
+            .g-card:nth-child(1),
+            .g-card:nth-child(2),
+            .g-card:nth-child(3) {
+                transform: none;
+            }
+
+            .roadmap-container {
+                padding-left: 18px;
+                gap: 18px;
+            }
+
+            .roadmap-step {
+                padding: 16px;
+            }
+
+            .roadmap-step::before {
+                left: -31px;
+                width: 13px;
+                height: 13px;
+            }
+
+            .roadmap-step:nth-child(even),
+            .roadmap-step:nth-child(odd) {
+                transform: none;
+            }
+
+            .step-title {
+                font-size: 1.05em;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .wiki-header-left {
+                font-size: 1.27em;
+            }
+
+            .main-layout {
+                padding: 0 8px;
+            }
+
+            .container {
+                padding: 24px 14px 28px;
+            }
+
+            h1 {
+                font-size: 1.95rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            .infobox th {
+                width: 38%;
+            }
+
+            #media .thumbinner > div {
+                height: 260px !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Нарисованная шапка -->
     <div class="wiki-header">
         <div class="wiki-header-left">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                <path d="M0 0h24v24H0z" fill="none"/>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
             WikiLab Pro
         </div>
-        <button class="theme-toggle" id="themeBtn" title="Переключить тему">
-            <!-- Иконка Солнца (для светлой темы) -->
+
+        <button class="theme-toggle" id="themeBtn" title="Переключить тему" aria-label="Переключить тему">
             <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor">
                 <path d="M0 0h24v24H0z" fill="none"/>
                 <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.5h-2v3h2V1zM5.36 18.22l-1.79 1.8 1.41 1.41 1.8-1.79-1.42-1.42zM10.5 20h2v3h-2v-3zm7.04-1.78l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5h3v2h-3v-2zm-1.24-5.66l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"/>
             </svg>
-            <!-- Иконка Луны (для темной темы) -->
             <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
         </button>
+
         <div id="progress-container">
             <div id="progress-bar"></div>
         </div>
     </div>
 
     <div class="main-layout">
-        <!-- Боковое меню -->
-        <div class="sidebar-nav" id="sidebar">
+        <nav class="sidebar-nav" id="sidebar" aria-label="Навигация по странице">
             <a href="#intro" class="active">Главная</a>
             <a href="#bio">Биография</a>
             <a href="#edu">Образование & Счётчики</a>
@@ -484,15 +802,13 @@
             <a href="#trajectory">Траектория ИИ</a>
             <a href="#media">Медиа</a>
             <a href="#achievements">Достижения</a>
-        </div>
+        </nav>
 
-        <!-- Основной лист -->
-        <div class="container">
+        <main class="container">
             <section id="intro">
                 <h1>Поленина Варвара Андреевна</h1>
                 <p class="subtitle">Спортсменка, хореограф со стажем, исследователь в сфере ИИ.</p>
 
-                <!-- Инфобокс -->
                 <div class="infobox">
                     <div class="infobox-header">Поленина В. А.</div>
                     <table>
@@ -540,7 +856,7 @@
             <section id="edu">
                 <h2>Образование & Результаты ЕГЭ</h2>
                 <p>В 2026 году Варвара окончила среднее образование с <b>серебряной медалью</b> за успеваемость. Суммарный показатель единого госэкзамена составил <b class="count-up" data-target="249">0</b> баллов.</p>
-                
+
                 <div class="ege-card">
                     <div class="ege-results">
                         <div class="ege-item">
@@ -548,16 +864,19 @@
                             <div class="ege-bar-container"><div class="ege-bar" data-score="91"></div></div>
                             <div class="ege-value"><span class="count-up" data-target="91">0</span></div>
                         </div>
+
                         <div class="ege-item">
                             <div class="ege-label">Математика (проф.)</div>
                             <div class="ege-bar-container"><div class="ege-bar" data-score="78"></div></div>
                             <div class="ege-value"><span class="count-up" data-target="78">0</span></div>
                         </div>
+
                         <div class="ege-item">
                             <div class="ege-label">Информатика</div>
                             <div class="ege-bar-container"><div class="ege-bar" data-score="70"></div></div>
                             <div class="ege-value"><span class="count-up" data-target="70">0</span></div>
                         </div>
+
                         <div class="ege-item">
                             <div class="ege-label">Доп. баллы за медаль</div>
                             <div class="ege-bar-container"><div class="ege-bar" data-score="100"></div></div>
@@ -569,9 +888,11 @@
 
             <section id="sport">
                 <h2>Спорт и физическая культура</h2>
+
                 <div class="thumbinner" style="float: right; width: 260px; margin: 0 0 20px 20px; transform: rotate(1.5deg);">
                     <img src="images/varvara_training.jpg" alt="Спорт">
                 </div>
+
                 <p>Физическая форма Варвары — результат глубокого понимания биомеханики тела и фитнес-нутрициологии. Регулярный тренировочный цикл включает силовые сессии, функциональный тренинг и упражнения на развитие гибкости, что позволяет ей сохранять идеальные пропорции.</p>
             </section>
 
@@ -583,14 +904,14 @@
             <section id="tech">
                 <h2>IT-вектор и Разработка</h2>
                 <p>Варвара активно развивает свои компетенции в IT-сфере. В фокусе её внимания — глубокое изучение программирования и подготовка к поступлению на профильное направление, связанное с машинным обучением (Machine Learning) и искусственным интеллектом (AI), для построения сильной технической карьеры.</p>
-                <p>Главным ментором и вдохновителем в технологической сфере выступает её партнер, <a href="https://tryander.space" target="_blank">Александр Третьяков (TryAnder-dev)</a> — инженер-разработчик на экосистемах C#, .NET и Unity. Их совместный вектор — создание интерактивных продуктов на стыке искусства и сложного программного кода.</p>
+                <p>Главным ментором и вдохновителем в технологической сфере выступает её партнер, <a href="https://tryander.space" target="_blank" rel="noopener noreferrer">Александр Третьяков (TryAnder-dev)</a> — инженер-разработчик на экосистемах C#, .NET и Unity. Их совместный вектор — создание интерактивных продуктов на стыке искусства и сложного программного кода.</p>
                 <p>Параллельно развивает навыки операционного управления, координируя логистические процессы в качестве независимого курьера-партнера Wildberries.</p>
             </section>
 
             <section id="trajectory">
                 <h2>Образовательная траектория: ИИ</h2>
                 <p>Стратегический вектор развития Варвары направлен на глубокое освоение фундаментальных и прикладных ИТ-дисциплин. Ключевая цель — интеграция современных методов Data Science и ИИ в аналитику и творчество.</p>
-                
+
                 <div class="roadmap-container">
                     <div class="roadmap-step">
                         <div class="step-badge processing">В процессе</div>
@@ -599,7 +920,7 @@
                             <p>Изучение архитектуры и синтаксиса высокоуровневых языков программирования <b>Python</b> и <b>C++</b>. Проектирование первых алгоритмических скриптов и систем обработки данных.</p>
                         </div>
                     </div>
-                    
+
                     <div class="roadmap-step">
                         <div class="step-badge plan">План</div>
                         <div class="step-content">
@@ -607,7 +928,7 @@
                             <p>Погружение в математическую базу: линейную алгебру, математический анализ, теорию вероятностей и классические алгоритмы машинного обучения (ML).</p>
                         </div>
                     </div>
-                    
+
                     <div class="roadmap-step">
                         <div class="step-badge plan">План</div>
                         <div class="step-content">
@@ -618,41 +939,43 @@
                 </div>
             </section>
 
-            <!-- ОБНОВЛЕННЫЙ РАЗДЕЛ "МЕДИА" -->
             <section id="media">
                 <h2>Медиа</h2>
-                
+
                 <div class="thumbinner" style="float: right; width: 220px; margin: 0 0 20px 20px; transform: rotate(-2deg);">
-                    <!-- Заглушка для скриншота/видео из тиктока -->
                     <div style="width:100%; height:350px; background:var(--bg-color); border:1px dashed var(--border-color); display:flex; align-items:center; justify-content:center; color:var(--text-secondary); font-family:'Caveat', cursive; font-size:1.5em; text-align:center;">
                         Место для<br>TikTok<br>видео/фото
                     </div>
                 </div>
 
-                <p>Варвара активно развивает свой личный бренд, создавая контент для <a href="https://www.tiktok.com/@wolly18?_r=1" target="_blank">своего TikTok-аккаунта (@wolly18)</a>. Формат коротких видео позволяет ей органично объединять любовь к эстетике, хореографии и современным медиа-трендам.</p>
-                
+                <p>Варвара активно развивает свой личный бренд, создавая контент для <a href="https://www.tiktok.com/@wolly18?_r=1" target="_blank" rel="noopener noreferrer">своего TikTok-аккаунта (@wolly18)</a>. Формат коротких видео позволяет ей органично объединять любовь к эстетике, хореографии и современным медиа-трендам.</p>
+
                 <p>В контенте преобладают следующие направления:</p>
+
                 <div style="margin-top: 15px; margin-bottom: 20px;">
                     <span class="chip">Танцевальные каверы</span>
                     <span class="chip">Лайфстайл & Влоги</span>
                     <span class="chip">Спортивная эстетика</span>
                     <span class="chip">Тренды</span>
                 </div>
-                
+
                 <p>Платформа выступает не только пространством для самовыражения, но и творческой лабораторией для оттачивания навыков видеомонтажа, цветокоррекции и взаимодействия с аудиторией.</p>
             </section>
 
             <section id="achievements">
                 <h2>Достижения & Планы</h2>
+
                 <div class="grid-cards">
                     <div class="g-card">
                         <div class="g-card-title">🎖️ Серебряная медаль</div>
                         <div style="font-size: 0.9em; color: var(--text-secondary);">Официальный знак отличия Министерства просвещения за успехи в учебе.</div>
                     </div>
+
                     <div class="g-card">
                         <div class="g-card-title">🤖 ИИ & Machine Learning</div>
                         <div style="font-size: 0.9em; color: var(--text-secondary);">Поступление на профильное ИТ-направление и непрерывное обучение для будущей карьеры.</div>
                     </div>
+
                     <div class="g-card">
                         <div class="g-card-title">💃 Сценический стаж</div>
                         <div style="font-size: 0.9em; color: var(--text-secondary);">Более десяти лет регулярных побед на региональных танцевальных соревнованиях и участия в постановках спектаклей.</div>
@@ -667,69 +990,142 @@
             <div style="font-family: 'Caveat', cursive; font-size: 1.2em; color: var(--text-secondary); border-top: 2px dashed var(--border-color); padding-top: 20px; text-align: center; margin-top: 40px;">
                 Проект разработан совместно с wwoly & tryander-dev
             </div>
-        </div>
+        </main>
     </div>
 
     <script>
-        const themeBtn = document.getElementById('themeBtn');
-        themeBtn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
+        const themeBtn = document.getElementById("themeBtn");
+        const progressBar = document.getElementById("progress-bar");
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll(".sidebar-nav a");
+
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+
+        themeBtn.addEventListener("click", () => {
+            const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+            const newTheme = isDark ? "light" : "dark";
+
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
         });
 
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        function updateScrollProgressAndNavigation() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
 
-        window.onscroll = function() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
+            progressBar.style.width = `${Math.min(Math.max(progress, 0), 100)}%`;
 
             let currentId = "";
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 120) {
-                    currentId = section.getAttribute('id');
+
+            sections.forEach((section) => {
+                const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+
+                if (scrollTop >= sectionTop - 140) {
+                    currentId = section.id;
                 }
             });
 
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').includes(currentId)) {
-                    link.classList.add('active');
+            navLinks.forEach((link) => {
+                link.classList.toggle("active", link.getAttribute("href") === `#${currentId}`);
+            });
+        }
+
+        window.addEventListener("scroll", updateScrollProgressAndNavigation, { passive: true });
+        window.addEventListener("resize", updateScrollProgressAndNavigation);
+        window.addEventListener("load", updateScrollProgressAndNavigation);
+
+        function animateCounter(counter) {
+            if (counter.dataset.animated === "true") return;
+
+            counter.dataset.animated = "true";
+
+            const target = Number(counter.dataset.target);
+            const duration = 900;
+            const startTime = performance.now();
+
+            function update(timestamp) {
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                const easedProgress = 1 - Math.pow(1 - progress, 3);
+
+                counter.textContent = Math.floor(target * easedProgress);
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    counter.textContent = target;
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        function animateEgeResults() {
+            const eduSection = document.getElementById("edu");
+
+            if (!eduSection || eduSection.dataset.animated === "true") return;
+
+            eduSection.dataset.animated = "true";
+
+            eduSection.querySelectorAll(".ege-bar").forEach((bar) => {
+                bar.style.transition = "width 1.1s ease-out";
+                bar.style.width = `${bar.dataset.score}%`;
+            });
+
+            eduSection.querySelectorAll(".count-up").forEach(animateCounter);
+        }
+
+        const eduSection = document.getElementById("edu");
+
+        if ("IntersectionObserver" in window && eduSection) {
+            const educationObserver = new IntersectionObserver(
+                (entries, observer) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            animateEgeResults();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                {
+                    threshold: 0.25,
+                    rootMargin: "0px 0px -80px 0px"
+                }
+            );
+
+            educationObserver.observe(eduSection);
+        } else {
+            animateEgeResults();
+        }
+
+        const generalCounters = document.querySelectorAll(".count-up");
+
+        if ("IntersectionObserver" in window) {
+            const counterObserver = new IntersectionObserver(
+                (entries, observer) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            animateCounter(entry.target);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                {
+                    threshold: 0.5
+                }
+            );
+
+            generalCounters.forEach((counter) => {
+                if (!eduSection.contains(counter)) {
+                    counterObserver.observe(counter);
                 }
             });
-        };
-
-        window.onload = function() {
-            setTimeout(() => {
-                const bars = document.querySelectorAll('.ege-bar');
-                bars.forEach(bar => {
-                    const score = bar.getAttribute('data-score');
-                    bar.style.transition = 'width 1s ease-out';
-                    bar.style.width = score + '%';
-                });
-            }, 300);
-
-            const counters = document.querySelectorAll('.count-up');
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const speed = target / 20; 
-                
-                const updateCount = () => {
-                    const count = +counter.innerText;
-                    if (count < target) {
-                        counter.innerText = Math.ceil(count + speed);
-                        setTimeout(updateCount, 30);
-                    } else {
-                        counter.innerText = target;
-                    }
-                };
-                updateCount();
-            });
-        };
+        } else {
+            generalCounters.forEach(animateCounter);
+        }
     </script>
 </body>
 </html>

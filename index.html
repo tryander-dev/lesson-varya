@@ -1,93 +1,97 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <meta favicon="images/favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Поленина Варвара Андреевна — WikiLab Ultra</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Добавлен шрифт Caveat для эффекта рукописного текста -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #f8fafc;
+            /* "Бумажная" светлая тема */
+            --bg-color: #f4f1ea;
             --surface-color: #ffffff;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --accent-color: #1a73e8;
-            --accent-hover: #1557b0;
-            --border-color: #e2e8f0;
-            --card-shadow: 0 10px 30px -10px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.02);
-            --hover-shadow: 0 20px 40px -15px rgba(26, 115, 232, 0.15);
-            --radius: 20px;
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --text-primary: #212121;
+            --text-secondary: #4a4a4a;
+            --accent-color: #e63946; /* Цвет красного маркера */
+            --border-color: #1a1a1a;
+            --card-shadow: 4px 4px 0px var(--border-color);
+            --transition: all 0.15s ease-out; /* Резкие, "ручные" анимации */
+            --hand-drawn-border: 3px 25px 5px 20px / 20px 5px 25px 3px;
+            --hand-drawn-border-alt: 15px 2px 12px 5px / 2px 15px 4px 12px;
         }
 
-        /* Цвета для темной темы */
+        /* Темная тема - стиль меловой доски или крафта */
         [data-theme="dark"] {
-            --bg-color: #0b0f19;
-            --surface-color: #131c2e;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-color: #38bdf8;
-            --accent-hover: #7dd3fc;
-            --border-color: #1e293b;
-            --card-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
-            --hover-shadow: 0 20px 40px -15px rgba(56, 189, 248, 0.2);
+            --bg-color: #1c1c1a;
+            --surface-color: #2b2b29;
+            --text-primary: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --accent-color: #ffb703; /* Желтый текстовыделитель */
+            --border-color: #e0e0e0;
+            --card-shadow: 4px 4px 0px var(--border-color);
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            line-height: 1.7;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-primary);
-            transition: background-color 0.4s, color 0.4s;
+            /* Легкий шум бумаги */
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            transition: background-color 0.2s, color 0.2s;
         }
 
-        /* Умная стеклянная шапка */
+        /* Убрано стекло, добавлена "бумажная" шапка */
         .wiki-header {
             position: sticky;
             top: 0;
-            background: rgba(var(--surface-color), 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
+            background: var(--surface-color);
+            border-bottom: 2px solid var(--border-color);
             z-index: 1000;
-            padding: 12px 30px;
+            padding: 15px 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: 0 4px 0 -2px var(--border-color);
         }
 
         .wiki-header-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.8em;
             font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--accent-color);
+            color: var(--text-primary);
+            transform: rotate(-1deg);
         }
         
-        .wiki-header-left svg { fill: var(--accent-color); }
+        .wiki-header-left svg { fill: var(--accent-color); width: 28px; height: 28px; }
 
-        /* Переключатель темы (Солнце / Луна) */
+        /* Переключатель темы (Стикер-кнопка) */
         .theme-toggle {
-            background: none;
-            border: 1px solid var(--border-color);
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 50% 40% 60% 40% / 40% 50% 40% 60%;
             padding: 8px;
-            border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--text-primary);
+            box-shadow: 2px 2px 0 var(--border-color);
             transition: var(--transition);
         }
         .theme-toggle:hover {
-            background: var(--border-color);
-            transform: rotate(30deg);
+            transform: translate(1px, 1px) rotate(15deg);
+            box-shadow: 1px 1px 0 var(--border-color);
         }
         .theme-toggle .moon-icon { display: none; }
         .theme-toggle .sun-icon { display: block; }
@@ -95,116 +99,152 @@
         [data-theme="dark"] .theme-toggle .moon-icon { display: block; }
         [data-theme="dark"] .theme-toggle .sun-icon { display: none; }
 
+        /* Маркерный прогресс-бар */
         #progress-container {
             position: absolute;
-            bottom: -1px;
+            bottom: -2px;
             left: 0;
             width: 100%;
-            height: 3px;
+            height: 4px;
             background: transparent;
         }
         #progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent-color), #ec4899);
+            background: var(--accent-color);
             width: 0%;
-            transition: width 0.1s;
         }
 
-        /* Макет с боковым меню */
+        /* Макет */
         .main-layout {
-            max-width: 1300px;
-            margin: 40px auto;
+            max-width: 1200px;
+            margin: 50px auto;
             display: flex;
-            gap: 40px;
+            gap: 50px;
             padding: 0 20px;
         }
 
-        /* Умное боковое меню */
+        /* Меню в виде заметок на полях */
         .sidebar-nav {
-            width: 240px;
+            width: 220px;
             position: sticky;
-            top: 100px;
+            top: 90px;
             height: fit-content;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
+            padding-right: 10px;
         }
         .sidebar-nav a {
-            padding: 10px 16px;
-            border-radius: 10px;
+            padding: 8px 12px;
             color: var(--text-secondary);
-            font-weight: 500;
+            font-family: 'Caveat', cursive;
+            font-size: 1.4em;
             text-decoration: none;
+            border-bottom: 2px solid transparent;
             transition: var(--transition);
-            font-size: 0.95em;
-            border-left: 2px solid transparent;
+            transform: rotate(-1deg);
+        }
+        .sidebar-nav a:nth-child(even) {
+            transform: rotate(1deg);
         }
         .sidebar-nav a:hover, .sidebar-nav a.active {
-            color: var(--accent-color);
-            background: rgba(26, 115, 232, 0.05);
-            border-left-color: var(--accent-color);
-            padding-left: 20px;
-        }
-        [data-theme="dark"] .sidebar-nav a:hover, [data-theme="dark"] .sidebar-nav a.active {
-            background: rgba(56, 189, 248, 0.08);
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent-color);
+            transform: translateX(5px) rotate(0deg);
         }
 
+        /* Основной лист */
         .container {
             flex-grow: 1;
-            max-width: 880px;
+            max-width: 850px;
             background-color: var(--surface-color);
-            border-radius: var(--radius);
-            padding: 50px;
+            padding: 50px 60px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--hand-drawn-border);
             box-shadow: var(--card-shadow);
-            border: 1px solid var(--border-color);
             box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Имитация скотча на главном листе */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 100px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
 
         h1 {
-            font-size: 3.2em;
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            margin: 0 0 10px 0;
-            background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 3.5em;
+            font-weight: 700;
+            line-height: 1.1;
+            margin: 0 0 15px 0;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Маркерное подчеркивание заголовка */
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: -5px;
+            right: -10px;
+            height: 12px;
+            background: var(--accent-color);
+            opacity: 0.3;
+            z-index: -1;
+            transform: rotate(-1deg);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
         }
 
         .subtitle {
-            font-size: 1.2em;
+            font-family: 'Caveat', cursive;
+            font-size: 1.6em;
             color: var(--text-secondary);
             margin-bottom: 2em;
-            font-weight: 400;
+            transform: rotate(-0.5deg);
         }
 
         h2 {
-            padding-bottom: 0.4em;
+            font-size: 2.2em;
             margin-top: 2em;
-            font-size: 2em;
-            font-weight: 700;
-            letter-spacing: -0.02em;
+            margin-bottom: 0.5em;
+            border-bottom: 3px dashed var(--border-color);
+            padding-bottom: 10px;
+            display: inline-block;
         }
 
-        /* Статичный стабильный Инфобокс (без лишней анимации клика) */
+        /* Инфобокс как отдельная прикрепленная карточка */
         .infobox {
             float: right;
-            margin: 0 0 25px 35px;
+            margin: 0 0 30px 40px;
             background: var(--surface-color);
-            border-radius: var(--radius);
             width: 300px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
+            border: 2px solid var(--border-color);
+            border-radius: var(--hand-drawn-border-alt);
+            box-shadow: 6px 6px 0px var(--border-color);
+            transform: rotate(2deg);
+            padding: 10px;
             cursor: default;
         }
 
         .infobox-header {
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(26,115,232,0.05), rgba(236,72,153,0.05));
+            padding: 10px;
             text-align: center;
+            font-family: 'Caveat', cursive;
+            font-size: 1.8em;
             font-weight: 700;
-            font-size: 1.15em;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 10px;
         }
 
         .infobox table {
@@ -212,193 +252,212 @@
             border-collapse: collapse;
         }
         .infobox th, .infobox td {
-            padding: 14px 18px;
-            font-size: 0.9em;
-            border-bottom: 1px solid var(--border-color);
+            padding: 10px 5px;
+            font-size: 0.95em;
+            border-bottom: 1px dashed var(--border-color);
         }
         .infobox th {
             color: var(--text-secondary);
-            font-weight: 500;
+            font-weight: 700;
             text-align: left;
-            width: 40%;
+            width: 35%;
         }
 
-        /* Изображения */
+        /* Изображения с неровными рамками */
         .thumbinner {
             background: var(--surface-color);
-            border-radius: var(--radius);
-            padding: 12px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
+            padding: 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 2% 3% 2% 4% / 3% 2% 4% 2%;
+            box-shadow: 3px 3px 0 var(--border-color);
         }
         .thumbinner img {
-            border-radius: calc(var(--radius) - 8px);
             width: 100%;
             height: auto;
             display: block;
+            border: 1px solid var(--border-color);
+            filter: grayscale(10%) contrast(110%);
         }
 
-        /* Теги (чипсы) — убран кликабельный ховер */
+        /* Теги (чипсы) — стиль выделения маркером */
         .chip {
             display: inline-block;
-            padding: 6px 14px;
-            background: rgba(26, 115, 232, 0.08);
-            color: var(--accent-color);
-            border-radius: 100px;
-            font-size: 0.85em;
-            font-weight: 600;
+            padding: 2px 10px;
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--text-primary);
+            border-radius: 40% 80% 50% 40% / 50% 40% 60% 40%;
+            font-family: 'Caveat', cursive;
+            font-size: 1.2em;
             margin: 3px;
-            cursor: default;
+            transform: rotate(-2deg);
         }
-        [data-theme="dark"] .chip { background: rgba(56, 189, 248, 0.12); }
+        .chip:nth-child(even) {
+            transform: rotate(3deg);
+        }
 
-        /* Счётчики ЕГЭ */
+        /* Счётчики ЕГЭ — блок в стиле черновика */
         .ege-card {
-            background: rgba(26, 115, 232, 0.02);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
+            border: 2px dashed var(--border-color);
             padding: 25px;
-            margin: 20px 0;
+            margin: 30px 0;
+            position: relative;
         }
         .ege-results {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 15px;
         }
         .ege-item {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
-        .ege-label { width: 160px; font-weight: 500; }
+        .ege-label { width: 180px; font-weight: 700; font-family: 'Caveat', cursive; font-size: 1.3em;}
         .ege-bar-container {
             flex-grow: 1;
-            height: 10px;
-            background: var(--border-color);
-            border-radius: 100px;
-            overflow: hidden;
+            height: 16px;
+            background: transparent;
+            border: 2px solid var(--border-color);
+            border-radius: 10px 3px 8px 4px / 3px 10px 4px 8px;
+            padding: 2px;
         }
         .ege-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent-color), #a855f7);
-            border-radius: 100px;
+            background: var(--text-primary);
             width: 0;
-            transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 5px 2px 5px 2px;
         }
         .ege-value {
             font-weight: 700;
-            color: var(--accent-color);
-            width: 45px;
+            width: 40px;
             text-align: right;
+            font-size: 1.1em;
         }
 
-        /* Информационные карточки — убран сдвиг и pointer */
+        /* Информационные карточки — асимметричная сетка */
         .grid-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin: 25px 0;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
         }
         .g-card {
-            background: var(--surface-color);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 24px;
-            box-shadow: var(--card-shadow);
-            cursor: default;
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: var(--hand-drawn-border-alt);
+            padding: 20px;
+            box-shadow: 3px 3px 0 var(--border-color);
+            transition: var(--transition);
+        }
+        .g-card:nth-child(1) { transform: rotate(-1.5deg); }
+        .g-card:nth-child(2) { transform: rotate(2deg) translateY(10px); }
+        .g-card:nth-child(3) { transform: rotate(-1deg); }
+        
+        .g-card:hover {
+            transform: translate(-2px, -2px) rotate(0);
+            box-shadow: 5px 5px 0 var(--border-color);
         }
 
         .g-card-title {
             font-weight: 700;
-            font-size: 1.1em;
-            margin-bottom: 8px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.6em;
+            margin-bottom: 5px;
             color: var(--accent-color);
         }
 
-        /* Модуль образовательной дорожной карты (Roadmap) */
+        /* Дорожная карта (Roadmap) - связанная линия */
         .roadmap-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            margin: 25px 0;
+            gap: 25px;
+            margin: 30px 0;
+            border-left: 3px solid var(--border-color);
+            padding-left: 25px;
         }
         .roadmap-step {
-            display: flex;
-            gap: 20px;
-            background: rgba(26, 115, 232, 0.02);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 24px;
-            align-items: flex-start;
+            position: relative;
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            padding: 20px;
+            box-shadow: 3px 3px 0 var(--border-color);
         }
-        .step-badge {
-            padding: 5px 14px;
-            border-radius: 8px;
-            font-size: 0.75em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            white-space: nowrap;
-        }
-        .step-badge.processing {
-            background: rgba(234, 179, 8, 0.1);
-            color: #ca8a04;
-        }
-        [data-theme="dark"] .step-badge.processing {
-            background: rgba(234, 179, 8, 0.15);
-            color: #fde047;
-        }
-        .step-badge.plan {
-            background: rgba(148, 163, 184, 0.1);
-            color: var(--text-secondary);
-        }
-        .step-title {
-            font-weight: 700;
-            font-size: 1.15em;
-            margin-bottom: 6px;
-            color: var(--text-primary);
-        }
-        .step-content p {
-            margin: 0;
-            font-size: 0.95em;
-            color: var(--text-secondary);
+        
+        /* Кружочки на линии (узлы графа) */
+        .roadmap-step::before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 20px;
+            width: 16px;
+            height: 16px;
+            background: var(--accent-color);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
         }
 
-        /* Кастомный шикарный скроллбар */
-        ::-webkit-scrollbar { width: 12px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 100px;
-            border: 3px solid var(--bg-color);
+        .roadmap-step:nth-child(even) {
+            border-radius: 2px 15px 3px 12px / 15px 3px 12px 2px;
+            transform: rotate(0.5deg);
         }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+        .roadmap-step:nth-child(odd) {
+            border-radius: 12px 3px 15px 2px / 2px 12px 3px 15px;
+            transform: rotate(-0.5deg);
+        }
+
+        .step-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border: 2px solid var(--border-color);
+            font-family: 'Caveat', cursive;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            transform: rotate(-2deg);
+        }
+        .step-badge.processing { background: var(--accent-color); color: var(--surface-color); }
+        .step-badge.plan { background: transparent; color: var(--text-secondary); border-style: dashed; }
+        
+        .step-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        a { color: var(--accent-color); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+        a:hover { color: var(--text-primary); background: var(--accent-color); text-decoration: none; }
+
+        /* Простой грубый скроллбар */
+        ::-webkit-scrollbar { width: 14px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); border-left: 2px solid var(--border-color); }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-primary);
+            border: 2px solid var(--bg-color);
+        }
 
         /* Адаптивность */
         @media (max-width: 1024px) {
             .sidebar-nav { display: none; }
-            .main-layout { margin: 20px auto; }
+            .main-layout { gap: 0; }
         }
         @media (max-width: 768px) {
-            .container { padding: 30px 20px; border-radius: 0; border: none; }
-            .infobox { float: none; width: 100%; margin: 30px 0; }
-            .roadmap-step { flex-direction: column; gap: 10px; }
+            .container { padding: 30px 20px; border: none; border-bottom: 2px solid var(--border-color); border-radius: 0; box-shadow: none; }
+            .infobox { float: none; width: auto; margin: 20px 0; transform: rotate(0); }
+            h1 { font-size: 2.5em; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Шапка в стиле Google Labs -->
+    <!-- Нарисованная шапка -->
     <div class="wiki-header">
         <div class="wiki-header-left">
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
             WikiLab Pro
         </div>
         <button class="theme-toggle" id="themeBtn" title="Переключить тему">
-            <!-- Иконка Солнца (для светлой темы) -->
             <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M0 0h24v24H0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.5h-2v3h2V1zM5.36 18.22l-1.79 1.8 1.41 1.41 1.8-1.79-1.42-1.42zM10.5 20h2v3h-2v-3zm7.04-1.78l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5h3v2h-3v-2zm-1.24-5.66l1.79-1.8-1.41-1.41-1.8 1.79 1.42 1.42zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"/></svg>
-            <!-- Иконка Луны (для темной темы) -->
             <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="currentColor"><path d="M0 0h24v24H0z" fill="none"/><path d="M12.3 2a10 10 0 0 0-1.9 14 10 10 0 0 0 14-1.9 1 1 0 0 1 .8 1.2 10 10 0 1 1-14.1-14.1 1 1 0 0 1 1.2.8z"/></svg>
         </button>
         <div id="progress-container">
@@ -407,7 +466,7 @@
     </div>
 
     <div class="main-layout">
-        <!-- Боковое умное меню -->
+        <!-- Боковое меню -->
         <div class="sidebar-nav" id="sidebar">
             <a href="#intro" class="active">Главная</a>
             <a href="#bio">Биография</a>
@@ -419,7 +478,7 @@
             <a href="#achievements">Достижения</a>
         </div>
 
-        <!-- Основной контейнер данных -->
+        <!-- Основной лист -->
         <div class="container">
             <section id="intro">
                 <h1>Поленина Варвара Андреевна</h1>
@@ -431,7 +490,7 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td colspan="2" style="text-align: center; padding: 15px;">
+                                <td colspan="2" style="text-align: center; padding: 10px;">
                                     <div class="thumbinner">
                                         <img src="images/varvara_main.jpg" alt="Варвара">
                                     </div>
@@ -474,7 +533,6 @@
                 <h2>Образование & Результаты ЕГЭ</h2>
                 <p>В 2026 году Варвара окончила среднее образование с <b>серебряной медалью</b> за успеваемость. Суммарный показатель единого госэкзамена составил <b class="count-up" data-target="249">0</b> баллов.</p>
                 
-                <!-- Анимированная панель ЕГЭ -->
                 <div class="ege-card">
                     <div class="ege-results">
                         <div class="ege-item">
@@ -503,7 +561,7 @@
 
             <section id="sport">
                 <h2>Спорт и физическая культура</h2>
-                <div class="thumbinner" style="float: right; width: 260px; margin: 0 0 20px 20px;">
+                <div class="thumbinner" style="float: right; width: 260px; margin: 0 0 20px 20px; transform: rotate(1.5deg);">
                     <img src="images/varvara_training.jpg" alt="Спорт">
                 </div>
                 <p>Физическая форма Варвары — результат глубокого понимания биомеханики тела и фитнес-нутрициологии. Регулярный тренировочный цикл включает силовые сессии, функциональный тренинг и упражнения на развитие гибкости, что позволяет ей сохранять идеальные пропорции.</p>
@@ -521,9 +579,8 @@
                 <p>Параллельно развивает навыки операционного управления, координируя логистические процессы в качестве независимого курьера-партнера Wildberries.</p>
             </section>
 
-            <!-- НОВЫЙ МОДУЛЬ: Траектория развития в ИИ -->
             <section id="trajectory">
-                <h2>Образовательная траектория: ИИ & Машинное обучение</h2>
+                <h2>Образовательная траектория: ИИ</h2>
                 <p>Стратегический вектор развития Варвары направлен на глубокое освоение фундаментальных и прикладных ИТ-дисциплин. Ключевая цель — интеграция современных методов Data Science и ИИ в аналитику и творчество.</p>
                 
                 <div class="roadmap-container">
@@ -571,18 +628,17 @@
                 </div>
             </section>
 
-            <div class="thumbinner" style="width: 100%; max-width: 500px; margin: 30px auto; text-align: center;">
+            <div class="thumbinner" style="width: 100%; max-width: 450px; margin: 40px auto; transform: rotate(-1.5deg);">
                 <img src="images/varvara_casual.jpg" alt="Повседневный образ">
             </div>
 
-            <div style="font-size: 0.8em; color: var(--text-secondary); border-top: 1px solid var(--border-color); padding-top: 20px; text-align: center;">
+            <div style="font-family: 'Caveat', cursive; font-size: 1.2em; color: var(--text-secondary); border-top: 2px dashed var(--border-color); padding-top: 20px; text-align: center; margin-top: 40px;">
                 Проект разработан совместно с wwoly & tryander-dev
             </div>
         </div>
     </div>
 
     <script>
-        // Переключатель темной / светлой темы (Солнце и Луна)
         const themeBtn = document.getElementById('themeBtn');
         themeBtn.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -590,18 +646,15 @@
             document.documentElement.setAttribute('data-theme', newTheme);
         });
 
-        // Индикатор чтения страницы и ScrollSpy (активные пункты меню)
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('.sidebar-nav a');
 
         window.onscroll = function() {
-            // Индикатор прогресса
             let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             let scrolled = (winScroll / height) * 100;
             document.getElementById("progress-bar").style.width = scrolled + "%";
 
-            // ScrollSpy логика
             let currentId = "";
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
@@ -618,26 +671,26 @@
             });
         };
 
-        // Анимация красивых набегающих цифр (CountUp) + ЕГЭ полосы
         window.onload = function() {
-            // Сначала запускаем полосы прогресса
-            const bars = document.querySelectorAll('.ege-bar');
-            bars.forEach(bar => {
-                const score = bar.getAttribute('data-score');
-                bar.style.width = score + '%';
-            });
+            setTimeout(() => {
+                const bars = document.querySelectorAll('.ege-bar');
+                bars.forEach(bar => {
+                    const score = bar.getAttribute('data-score');
+                    bar.style.transition = 'width 1s ease-out';
+                    bar.style.width = score + '%';
+                });
+            }, 300); // Небольшая задержка перед заполнением шкал
 
-            // Запускаем счетчики цифр
             const counters = document.querySelectorAll('.count-up');
             counters.forEach(counter => {
                 const target = +counter.getAttribute('data-target');
-                const speed = target / 40; // Скорость анимации
+                const speed = target / 20; 
                 
                 const updateCount = () => {
                     const count = +counter.innerText;
                     if (count < target) {
                         counter.innerText = Math.ceil(count + speed);
-                        setTimeout(updateCount, 20);
+                        setTimeout(updateCount, 30);
                     } else {
                         counter.innerText = target;
                     }
